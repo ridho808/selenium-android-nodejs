@@ -23,14 +23,16 @@ const service = new chrome.ServiceBuilder(chromeDriverPath);
 const driver = new Builder().forBrowser('chrome').setChromeOptions(chromeOptions).setChromeService(service).build();
 // SETUP //
 
-await driver.get("https://facebook.com/")
+await driver.get("https://www.bbc.com/indonesia/topics/cjgn7k8yx4gt")
 await driver.wait(until.elementLocated(By.css('body'), 10000))
 
 let sourchHtml = await driver.getPageSource()
 let $ = cheerio.load(sourchHtml)
 console.log($.html())
-schedule('*/1 * * * *', async () => {
-
+schedule('*/10 * * * * *', async () => {
+    await driver.executeScript('window.scrollBy(0, 500);');
+    await driver.sleep(3000)
+    await driver.executeScript('window.scrollBy(0, -500);');
     console.log("TEST EXECUTE AUTOMATION JS");
 })
 const rl = readline.createInterface({
